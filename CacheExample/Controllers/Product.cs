@@ -51,7 +51,7 @@ public class ProductsController : ControllerBase
 
         if (cachedBytes != null)
         {
-            var cachedData = JsonSerializer.Deserialize<string>(cachedBytes);
+            var cachedData = JsonSerializer.Deserialize<Product>(cachedBytes);
             return Ok(new { Id = id, Data = cachedData, Source = "Redis L2" });
         }
 

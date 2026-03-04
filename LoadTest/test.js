@@ -24,7 +24,7 @@ export default function () {
     // Генерируем ID от 1 до 100, чтобы имитировать запросы к разным товарам (hit ratio)
     const productId = Math.floor(Math.random() * 100) + 1;
     
-    const url = `${BASE_URL}/${productId}/${MODE}`;
+    const url = `${BASE_URL}/1/${MODE}`;
     
     const res = http.get(url);
 
