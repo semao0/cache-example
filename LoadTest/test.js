@@ -4,8 +4,10 @@ import { check, sleep } from 'k6';
 // k6 run -e MODE=nocache -e VUS=50 test.js
 // k6 run -e MODE=redis -e VUS=200 test.js
 // k6 run -e MODE=hybrid -e VUS=500 test.js
+// k6 run -e MODE=hybrid -e VUS=500 -e KEYS=1 test.js   // сценарий 1: один хот-ключ
 
 const MODE = __ENV.MODE || 'nocache'; // nocache, redis, hybrid
+const KEYS = __ENV.KEYS ? parseInt(__ENV.KEYS) : 100; // 1 = один хот-ключ, 100 = разные товары
 const BASE_URL = 'http://localhost:5033/api/Products'; // Укажите порт вашего приложения
 
 export const options = {
@@ -21,10 +23,10 @@ export const options = {
 };
 
 export default function () {
-    // Генерируем ID от 1 до 100, чтобы имитировать запросы к разным товарам (hit ratio)
-    const productId = Math.floor(Math.random() * 100) + 1;
+    // KEYS=1 — все запросы в один товар (хот-ключ), KEYS=100 — разные товары (hit ratio)
+    const productId = Math.floor(Math.random() * KEYS) + 1;
     
-    const url = `${BASE_URL}/1/${MODE}`;
+    const url = `${BASE_URL}/${productId}/${MODE}`;
     
     const res = http.get(url);
 
